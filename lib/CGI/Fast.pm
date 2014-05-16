@@ -20,7 +20,7 @@ local $^W = 1;
 # wish, but if you redistribute a modified version, please attach a note
 # listing the modifications you have made.
 
-$CGI::Fast::VERSION='1.10';
+$CGI::Fast::VERSION='1.10_01';
 
 use CGI;
 use FCGI;

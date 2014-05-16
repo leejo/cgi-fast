@@ -3,8 +3,6 @@ my $mm = $ExtUtils::MakeMaker::VERSION;
 
 require 5.008001;
 
-system("perl", "t/gen-tests/gen-start-end-tags.pl");
-
 # See lib/ExtUtils/MakeMaker.pm for details of how to influence
 # the contents of the Makefile that is written.
 WriteMakefile(
@@ -16,10 +14,10 @@ WriteMakefile(
        'if'          => 0, # core in 5.6.2 and later, for deprecate.pm
        'Test::More'  => 0.98, # Ideally, this could be just a "test_requires". Version requirement is for 'subtest' support.
        'File::Spec'  => .82,
-       'CGI'         => 3.65,
+       'CGI'         => 3.65_02,
        'FCGI'        => 0.67,
     },
-    test => { TESTS => 't/*.t t/headers/*.t' },
+    test => { TESTS => 't/*.t' },
     'linkext'   => { LINKTYPE=>'' },	# no link needed
     'dist'      => {'COMPRESS'=>'gzip -9f', 'SUFFIX' => 'gz',
 	            'ZIP'=>'/usr/bin/zip','ZIPFLAGS'=>'-rl'},
