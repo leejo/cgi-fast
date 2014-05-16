@@ -8,7 +8,7 @@ require 5.008001;
 WriteMakefile(
 'INSTALLDIRS' => ( $] >= 5.012 ? 'site' : 'perl' ),
     'NAME'	=> 'CGI::Fast',
-    'DISTNAME'  => 'cgi-fast',
+    'DISTNAME'  => 'CGI-Fast',
     'VERSION_FROM'   => 'lib/CGI/Fast.pm',
      'PREREQ_PM' => {
        'if'          => 0, # core in 5.6.2 and later, for deprecate.pm
