@@ -9,13 +9,14 @@ system("perl", "t/gen-tests/gen-start-end-tags.pl");
 # the contents of the Makefile that is written.
 WriteMakefile(
 'INSTALLDIRS' => ( $] >= 5.012 ? 'site' : 'perl' ),
-    'NAME'	=> 'CGI',
-    'DISTNAME'  => 'CGI.pm',
-    'VERSION_FROM'   => 'lib/CGI.pm',
+    'NAME'	=> 'CGI::Fast',
+    'DISTNAME'  => 'cgi-fast',
+    'VERSION_FROM'   => 'lib/CGI/Fast.pm',
      'PREREQ_PM' => {
        'if'          => 0, # core in 5.6.2 and later, for deprecate.pm
        'Test::More'  => 0.98, # Ideally, this could be just a "test_requires". Version requirement is for 'subtest' support.
        'File::Spec'  => .82,
+       'CGI'         => 3.65,
        'FCGI'        => 0.67,
     },
     test => { TESTS => 't/*.t t/headers/*.t' },
@@ -28,9 +29,9 @@ WriteMakefile(
                 requires  => {perl => '5.008001'},
                 resources => {
                     license    => 'http://dev.perl.org/licenses/',
-                    homepage => 'https://metacpan.org/module/CGI',
-                    repository => 'https://github.com/leejo/CGI.pm',
-                    bugtracker => 'https://github.com/leejo/CGI.pm/issues',
+                    homepage => 'https://metacpan.org/module/CGI::Fast',
+                    repository => 'https://github.com/leejo/cgi-fast',
+                    bugtracker => 'https://github.com/leejo/cgi-fast/issues',
                 },
                 no_index => {directory => [qw/t/]},
             },
