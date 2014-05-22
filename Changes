@@ -1,9 +1,9 @@
 
-Version 1.10_02 May 15, 2014
+Version 2.00 May 22, 2014
 
-    [DEVELOPER RELEASE]
+    [DOCUMENTATION]
     - Repointing bugtracker at newly forked github repo
-    - Tickets to be migrated from RT to github issues (both CGI and CGI.pm distributions)
-    - TODO file added, to be added to github issues
+    - Tickets migrated from RT to github issues (both CGI and CGI.pm distributions)
+    - Bump version to 2.00 for clear boundary of above changes
 
 For previous Changes please see CGI.pm prior to 3.65_01
