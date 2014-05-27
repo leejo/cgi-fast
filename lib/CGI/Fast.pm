@@ -20,7 +20,7 @@ local $^W = 1;
 # wish, but if you redistribute a modified version, please attach a note
 # listing the modifications you have made.
 
-$CGI::Fast::VERSION='2.00';
+$CGI::Fast::VERSION='2.01';
 
 use CGI;
 use FCGI;
@@ -91,7 +91,7 @@ CGI::Fast - CGI Interface for Fast CGI
 =head1 DESCRIPTION
 
 CGI::Fast is a subclass of the CGI object created by CGI.pm.  It is
-specialized to work well FCGI module, which greatly speeds up CGI
+specialized to work with the FCGI module, which greatly speeds up CGI
 scripts by turning them into persistently running server processes.
 Scripts that perform time-consuming initialization processes, such as
 loading large modules or opening persistent database connections, will
@@ -203,12 +203,15 @@ I haven't tested this very much.
 
 =head1 AUTHOR INFORMATION
 
-Copyright 1996-1998, Lincoln D. Stein.  All rights reserved.
+Copyright 1996-1998, Lincoln D. Stein.  All rights reserved. Currently
+maintained by Lee Johnson
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 
-Address bug reports and comments to: lstein@cshl.org
+Address bug reports and comments to:
+
+	https://github.com/leejo/cgi-fast
 
 =head1 BUGS
 

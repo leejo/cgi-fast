@@ -1,4 +1,10 @@
 
+Version 2.01 May 27, 2014
+
+    [DOCUMENTATION]
+	- update perldoc to list current bugtracker and maintainer
+	- pod2readme the perldoc to replace content of README with something sane
+
 Version 2.00 May 22, 2014
 
     [DOCUMENTATION]
