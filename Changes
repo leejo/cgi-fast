@@ -1,9 +1,20 @@
+Next Version
+
+    [INTERNALS]
+    - allow FCGI_SOCKET_PATH and FCGI_LISTEN_QUEUE ENV variables to be
+      passed in as import settings, although favour ENV variables if set
+    - delay creation of FCGI::Request until the first call to CGI::Fast->new
+      (RT #70609), removing the need to defined these in a BEGIN block
+
+    [DOCUMENTATION]
+    - document above changes
+    - general tidy up
 
 Version 2.01 May 27, 2014
 
     [DOCUMENTATION]
-	- update perldoc to list current bugtracker and maintainer
-	- pod2readme the perldoc to replace content of README with something sane
+    - update perldoc to list current bugtracker and maintainer
+    - pod2readme the perldoc to replace content of README with something sane
 
 Version 2.00 May 22, 2014
 

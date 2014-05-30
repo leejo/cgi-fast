@@ -2,16 +2,20 @@ NAME
     CGI::Fast - CGI Interface for Fast CGI
 
 SYNOPSIS
-        use CGI::Fast qw(:standard);
+        use CGI::Fast
+            socket_path  => '9000',
+            listen_queue => 50;
+
         $COUNTER = 0;
+
         while (new CGI::Fast) {
             print header;
             print start_html("Fast CGI Rocks");
             print
-                h1("Fast CGI Rocks"),
-                "Invocation number ",b($COUNTER++),
+            h1("Fast CGI Rocks"),
+            "Invocation number ",b($COUNTER++),
                 " PID ",b($$),".",
-                hr;
+            hr;
             print end_html;
         }
 
@@ -36,11 +40,11 @@ WRITING FASTCGI PERL SCRIPTS
 
     A typical FastCGI script will look like this:
 
-        #!/usr/bin/perl
+        #!perl
         use CGI::Fast;
-        &do_some_initialization();
+        do_some_initialization();
         while ($q = new CGI::Fast) {
-            &process_request($q);
+            process_request($q);
         }
 
     Each time there's a new request, CGI::Fast returns a CGI object to your
@@ -54,7 +58,7 @@ WRITING FASTCGI PERL SCRIPTS
     way:
 
         while (new CGI::Fast) {
-            &process_request;
+            process_request();
         }
 
     Calls to header(), start_form(), etc. will all operate on the current
@@ -91,23 +95,42 @@ EXTERNAL FASTCGI SERVER INVOCATION
     allowing `CGI::Fast' to be used as an external FastCGI server. (See
     `FCGI' documentation for `FCGI::OpenSocket' for more information.)
 
-    FCGI_SOCKET_PATH
+    You can set these as ENV variables or imports in the use CGI::Fast
+    statement. If the ENV variables are set then these will be favoured so
+    you can override the import statements on the command line, etc.
+
+    FCGI_SOCKET_PATH / socket_path
         The address (TCP/IP) or path (UNIX Domain) of the socket the
         external FastCGI script to which bind an listen for incoming
         connections from the web server.
 
-    FCGI_LISTEN_QUEUE
-        Maximum length of the queue of pending connections.
+    FCGI_LISTEN_QUEUE / listen_queue
+        Maximum length of the queue of pending connections, defaults to 100.
 
     For example:
 
-        #!/usr/local/bin/perl    # must be a FastCGI version of perl!
-        use CGI::Fast;
-        &do_some_initialization();
-        $ENV{FCGI_SOCKET_PATH} = "sputnik:8888";
-        $ENV{FCGI_LISTEN_QUEUE} = 100;
+        use CGI::Fast
+            socket_path  => "sputnik:8888",
+            listen_queue => "50"
+        ;
+
+        do_some_initialization();
+
         while ($q = new CGI::Fast) {
-            &process_request($q);
+            process_request($q);
+        }
+
+    Or:
+
+        use CGI::Fast;
+
+        do_some_initialization();
+
+        $ENV{FCGI_SOCKET_PATH} = "sputnik:8888";
+        $ENV{FCGI_LISTEN_QUEUE} = 50;
+
+        while ($q = new CGI::Fast) {
+            process_request($q);
         }
 
 CAVEATS
@@ -122,7 +145,7 @@ AUTHOR INFORMATION
 
     Address bug reports and comments to:
 
-            https://github.com/leejo/cgi-fast
+        https://github.com/leejo/cgi-fast
 
 BUGS
     This section intentionally left blank.

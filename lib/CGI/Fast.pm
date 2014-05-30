@@ -7,13 +7,6 @@ use if $] >= 5.019, 'deprecate';
 # and since we're not in a BLOCK, warnings are enabled until the EOF
 local $^W = 1;
 
-# See the bottom of this file for the POD documentation.  Search for the
-# string '=head'.
-
-# You can run this file through either pod2man or pod2html to produce pretty
-# documentation in manual or html file format (these utilities are part of the
-# Perl 5 distribution).
-
 # Copyright 1995,1996, Lincoln D. Stein.  All rights reserved.
 # It may be used and modified freely, but I do request that this copyright
 # notice remain attached to the file.  You may modify this module as you
@@ -42,29 +35,41 @@ sub save_request {
 
 # If ENV{FCGI_SOCKET_PATH} is specified, we maintain a FCGI Request handle
 # in this package variable.
-use vars qw($Ext_Request);
-BEGIN {
+use vars qw($Ext_Request $socket $queue);
+
+sub import {
+    my ($package,@import) = @_;
+    if (scalar(@import) % 2 == 0) {
+        my %args = @import;
+        $socket = $args{socket_path};
+        $queue  = $args{listen_queue};
+    }
+    $package->SUPER::import(@import);
+}
+
+sub _create_fcgi_request {
     # If ENV{FCGI_SOCKET_PATH} is given, explicitly open the socket.
-    if ($ENV{FCGI_SOCKET_PATH}) {
-        my $path    = $ENV{FCGI_SOCKET_PATH};
-        my $backlog = $ENV{FCGI_LISTEN_QUEUE} || 100;
+    if ($ENV{FCGI_SOCKET_PATH} or $socket) {
+        my $path    = $ENV{FCGI_SOCKET_PATH}  || $socket;
+        my $backlog = $ENV{FCGI_LISTEN_QUEUE} || $queue || 100;
         my $socket  = FCGI::OpenSocket( $path, $backlog );
-        $Ext_Request = FCGI::Request( \*STDIN, \*STDOUT, \*STDERR,
+        return FCGI::Request( \*STDIN, \*STDOUT, \*STDERR,
                     \%ENV, $socket, 1 );
     }
     else {
-        $Ext_Request = FCGI::Request();
+        return FCGI::Request();
     }
 }
 
 sub new {
-     my ($self, $initializer, @param) = @_;
-     unless (defined $initializer) {
-         return undef unless $Ext_Request->Accept() >= 0;
-     }
-     CGI->_reset_globals;
-     $self->_setup_symbols(@CGI::SAVED_SYMBOLS) if @CGI::SAVED_SYMBOLS;
-     return $CGI::Q = $self->SUPER::new($initializer, @param);
+    my ($self, $initializer, @param) = @_;
+    unless (defined $initializer) {
+        $Ext_Request ||= _create_fcgi_request();
+        return undef unless $Ext_Request->Accept >= 0;
+    }
+    CGI->_reset_globals;
+    $self->_setup_symbols(@CGI::SAVED_SYMBOLS) if @CGI::SAVED_SYMBOLS;
+    return $CGI::Q = $self->SUPER::new($initializer, @param);
 }
 
 1;
@@ -75,16 +80,20 @@ CGI::Fast - CGI Interface for Fast CGI
 
 =head1 SYNOPSIS
 
-    use CGI::Fast qw(:standard);
+    use CGI::Fast
+        socket_path  => '9000',
+        listen_queue => 50;
+
     $COUNTER = 0;
+
     while (new CGI::Fast) {
-	print header;
-	print start_html("Fast CGI Rocks");
-	print
-	    h1("Fast CGI Rocks"),
-	    "Invocation number ",b($COUNTER++),
+        print header;
+        print start_html("Fast CGI Rocks");
+        print
+        h1("Fast CGI Rocks"),
+        "Invocation number ",b($COUNTER++),
             " PID ",b($$),".",
-	    hr;
+        hr;
         print end_html;
     }
 
@@ -113,11 +122,11 @@ waiting some more.
 
 A typical FastCGI script will look like this:
 
-    #!/usr/bin/perl
+    #!perl
     use CGI::Fast;
-    &do_some_initialization();
+    do_some_initialization();
     while ($q = new CGI::Fast) {
-	&process_request($q);
+        process_request($q);
     }
 
 Each time there's a new request, CGI::Fast returns a
@@ -133,7 +142,7 @@ CGI.pm's default CGI object mode also works.  Just modify the loop
 this way:
 
     while (new CGI::Fast) {
-	&process_request;
+        process_request();
     }
 
 Calls to header(), start_form(), etc. will all operate on the
@@ -173,28 +182,48 @@ Two environment variables affect how the C<CGI::Fast> object is created,
 allowing C<CGI::Fast> to be used as an external FastCGI server.  (See C<FCGI>
 documentation for C<FCGI::OpenSocket> for more information.)
 
+You can set these as ENV variables or imports in the use CGI::Fast statement.
+If the ENV variables are set then these will be favoured so you can override
+the import statements on the command line, etc.
+
 =over
 
-=item FCGI_SOCKET_PATH
+=item FCGI_SOCKET_PATH / socket_path
 
 The address (TCP/IP) or path (UNIX Domain) of the socket the external FastCGI
 script to which bind an listen for incoming connections from the web server.
 
-=item FCGI_LISTEN_QUEUE
+=item FCGI_LISTEN_QUEUE / listen_queue
 
-Maximum length of the queue of pending connections.
+Maximum length of the queue of pending connections, defaults to 100.
 
 =back
 
 For example:
 
-    #!/usr/local/bin/perl    # must be a FastCGI version of perl!
-    use CGI::Fast;
-    &do_some_initialization();
-    $ENV{FCGI_SOCKET_PATH} = "sputnik:8888";
-    $ENV{FCGI_LISTEN_QUEUE} = 100;
+    use CGI::Fast
+        socket_path  => "sputnik:8888",
+        listen_queue => "50"
+    ;
+
+    do_some_initialization();
+
     while ($q = new CGI::Fast) {
-	&process_request($q);
+        process_request($q);
+    }
+
+
+Or:
+
+    use CGI::Fast;
+
+    do_some_initialization();
+
+    $ENV{FCGI_SOCKET_PATH} = "sputnik:8888";
+    $ENV{FCGI_LISTEN_QUEUE} = 50;
+
+    while ($q = new CGI::Fast) {
+        process_request($q);
     }
 
 =head1 CAVEATS
@@ -211,7 +240,7 @@ it under the same terms as Perl itself.
 
 Address bug reports and comments to:
 
-	https://github.com/leejo/cgi-fast
+    https://github.com/leejo/cgi-fast
 
 =head1 BUGS
 
