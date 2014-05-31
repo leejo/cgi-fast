@@ -7,7 +7,7 @@ BEGIN {
     $fcgi = $@ ? 0 : 1;
 }
 
-use Test::More tests => 2;
+use Test::More tests => 3;
 
 # Shut up "used only once" warnings.
 () = $CGI::Q;
@@ -16,10 +16,17 @@ SKIP: {
     skip( 'FCGI not installed, cannot continue', 2 ) unless $fcgi;
 
     use CGI::Fast
+        '-private_tempfiles',
         socket_path  => ':9000',
         listen_queue => 50
     ;
 
     is( $CGI::Fast::socket,':9000','imported socket_path' );
     is( $CGI::Fast::queue,50,'imported listen_queue' );
+
+    is(
+        $CGI::PRIVATE_TEMPFILES,
+        1,
+        "pragma in subclass set package variable in parent class. "
+    );
 };

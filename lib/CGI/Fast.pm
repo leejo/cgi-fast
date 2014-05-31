@@ -39,10 +39,14 @@ use vars qw($Ext_Request $socket $queue);
 
 sub import {
     my ($package,@import) = @_;
-    if (scalar(@import) % 2 == 0) {
-        my %args = @import;
-        $socket = $args{socket_path};
-        $queue  = $args{listen_queue};
+    # check imports for this class then pass on
+    # imports to SUPER class
+    for (my $i = 0; $i < scalar( @import ); $i++) {
+        if ( $import[$i] eq 'socket_path' ) {
+            $socket = $import[$i+1];
+        } elsif ( $import[$i] eq 'listen_queue' ) {
+            $queue = $import[$i+1];
+        }
     }
     $package->SUPER::import(@import);
 }
