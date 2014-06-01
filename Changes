@@ -5,6 +5,8 @@ Next Version
       passed in as import settings, although favour ENV variables if set
     - delay creation of FCGI::Request until the first call to CGI::Fast->new
       (RT #70609), removing the need to defined these in a BEGIN block
+    - add test to check ENV values are not recycled from old requests and not
+      set as defaults when the FCGI_SOCKET_PATH is used (RT #65492)
 
     [DOCUMENTATION]
     - document above changes
