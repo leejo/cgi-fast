@@ -8,6 +8,13 @@ SYNOPSIS
 
         $COUNTER = 0;
 
+        # optional, will default to STDOUT, STDIN, STDERR
+        CGI::Fast->file_handles({
+            fcgi_input_file_handle  => IO::Handle->new,
+            fcgi_output_file_handle => IO::Handle->new,
+            fcgi_error_file_handle  => IO::Handle->new,
+        });
+
         while (new CGI::Fast) {
             print header;
             print start_html("Fast CGI Rocks");
@@ -131,6 +138,23 @@ EXTERNAL FASTCGI SERVER INVOCATION
 
         while ($q = new CGI::Fast) {
             process_request($q);
+        }
+
+FILE HANDLES
+    FCGI defaults to using STDIN, STDOUT, and STDERR as its filehandles -
+    this may lead to unexpected redirect of output if you migrate scripts
+    from CGI.pm to CGI::Fast. To get around this you can use the
+    file_handles method, which you must do before the first call to
+    CGI::Fast->new. For example using IO::Handle:
+
+        CGI::Fast->file_handles({
+            fcgi_input_file_handle  => IO::Handle->new,
+            fcgi_output_file_handle => IO::Handle->new,
+            fcgi_error_file_handle  => IO::Handle->new,
+        });
+
+        while (new CGI::Fast) {
+            ..
         }
 
 CAVEATS
