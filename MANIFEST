@@ -6,3 +6,5 @@ README
 t/001_basic.t
 t/002_import.t
 t/003_env_pollution.t
+t/004_fcgi_file_handles.t
+t/005_no_file_handles.t

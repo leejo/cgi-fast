@@ -52,28 +52,54 @@ sub import {
 }
 
 sub _create_fcgi_request {
-    # If ENV{FCGI_SOCKET_PATH} is given, explicitly open the socket.
+    my ( $in_fh,$out_fh,$err_fh ) = @_;
+    # If we have a socket set, explicitly open it
     if ($ENV{FCGI_SOCKET_PATH} or $socket) {
         my $path    = $ENV{FCGI_SOCKET_PATH}  || $socket;
         my $backlog = $ENV{FCGI_LISTEN_QUEUE} || $queue || 100;
         my $socket  = FCGI::OpenSocket( $path, $backlog );
-        return FCGI::Request( \*STDIN, \*STDOUT, \*STDERR,
-                    \%ENV, $socket, 1 );
+        return FCGI::Request(
+            ( $in_fh  || \*STDIN ),
+            ( $out_fh || \*STDOUT ),
+            ( $err_fh || \*STDERR ),
+            \%ENV,
+            $socket,
+            1
+        );
     }
     else {
-        return FCGI::Request();
+        return FCGI::Request(
+            ( $in_fh  || \*STDIN ),
+            ( $out_fh || \*STDOUT ),
+            ( $err_fh || \*STDERR ),
+        );
     }
 }
 
-sub new {
-    my ($self, $initializer, @param) = @_;
-    unless (defined $initializer) {
-        $Ext_Request ||= _create_fcgi_request();
-        return undef unless $Ext_Request->Accept >= 0;
+{
+    my ( $in_fh,$out_fh,$err_fh );
+
+    sub file_handles {
+        my ($self, $handles) = @_;
+
+        if ( ref( $handles ) eq 'HASH' ) {
+            $in_fh  = delete( $handles->{fcgi_input_file_handle} );
+            $out_fh = delete( $handles->{fcgi_output_file_handle} );
+            $err_fh = delete( $handles->{fcgi_error_file_handle} );
+        }
     }
-    CGI->_reset_globals;
-    $self->_setup_symbols(@CGI::SAVED_SYMBOLS) if @CGI::SAVED_SYMBOLS;
-    return $CGI::Q = $self->SUPER::new($initializer, @param);
+
+    sub new {
+        my ($self, $initializer, @param) = @_;
+
+        if ( ! defined $initializer ) {
+            $Ext_Request ||= _create_fcgi_request( $in_fh,$out_fh,$err_fh );
+            return undef unless $Ext_Request->Accept >= 0;
+        }
+        CGI->_reset_globals;
+        $self->_setup_symbols(@CGI::SAVED_SYMBOLS) if @CGI::SAVED_SYMBOLS;
+        return $CGI::Q = $self->SUPER::new($initializer, @param);
+    }
 }
 
 1;
@@ -89,6 +115,13 @@ CGI::Fast - CGI Interface for Fast CGI
         listen_queue => 50;
 
     $COUNTER = 0;
+
+    # optional, will default to STDOUT, STDIN, STDERR
+    CGI::Fast->file_handles({
+        fcgi_input_file_handle  => IO::Handle->new,
+        fcgi_output_file_handle => IO::Handle->new,
+        fcgi_error_file_handle  => IO::Handle->new,
+    });
 
     while (new CGI::Fast) {
         print header;
@@ -183,7 +216,7 @@ to your srm.conf:
     FastCgiExternalServer /usr/etc/httpd/fcgi-bin/file_upload.fcgi -host sputnik:8888
 
 Two environment variables affect how the C<CGI::Fast> object is created,
-allowing C<CGI::Fast> to be used as an external FastCGI server.  (See C<FCGI>
+allowing C<CGI::Fast> to be used as an external FastCGI server. (See C<FCGI>
 documentation for C<FCGI::OpenSocket> for more information.)
 
 You can set these as ENV variables or imports in the use CGI::Fast statement.
@@ -228,6 +261,24 @@ Or:
 
     while ($q = new CGI::Fast) {
         process_request($q);
+    }
+
+=head1 FILE HANDLES
+
+FCGI defaults to using STDIN, STDOUT, and STDERR as its filehandles - this
+may lead to unexpected redirect of output if you migrate scripts from CGI.pm
+to CGI::Fast. To get around this you can use the file_handles method, which
+you must do B<before> the first call to CGI::Fast->new. For example using
+IO::Handle:
+
+    CGI::Fast->file_handles({
+        fcgi_input_file_handle  => IO::Handle->new,
+        fcgi_output_file_handle => IO::Handle->new,
+        fcgi_error_file_handle  => IO::Handle->new,
+    });
+
+    while (new CGI::Fast) {
+        ..
     }
 
 =head1 CAVEATS

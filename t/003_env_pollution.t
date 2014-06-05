@@ -65,5 +65,3 @@ foreach my $i ( 1 .. 5 ) {
         );
     }
 }
-
-done_testing();
