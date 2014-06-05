@@ -1,4 +1,4 @@
-Next Version
+Version 2.02 Jun 05, 2014
 
     [INTERNALS]
     - allow FCGI_SOCKET_PATH and FCGI_LISTEN_QUEUE ENV variables to be
