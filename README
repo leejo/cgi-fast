@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/leejo/cgi-fast.svg?branch=master)](https://travis-ci.org/leejo/cgi-fast)
+
 NAME
     CGI::Fast - CGI Interface for Fast CGI
 
