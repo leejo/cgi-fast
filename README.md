@@ -1,10 +1,10 @@
 [![Build Status](https://travis-ci.org/leejo/cgi-fast.svg?branch=master)](https://travis-ci.org/leejo/cgi-fast)
 
-## NAME
+# NAME
 
 CGI::Fast - CGI Interface for Fast CGI
 
-## SYNOPSIS
+# SYNOPSIS
 
     use CGI::Fast
         socket_path  => '9000',
@@ -30,7 +30,7 @@ CGI::Fast - CGI Interface for Fast CGI
         print end_html;
     }
 
-## DESCRIPTION
+# DESCRIPTION
 
 CGI::Fast is a subclass of the CGI object created by CGI.pm.  It is
 specialized to work with the FCGI module, which greatly speeds up CGI
@@ -39,12 +39,12 @@ Scripts that perform time-consuming initialization processes, such as
 loading large modules or opening persistent database connections, will
 see large performance improvements.
 
-## OTHER PIECES OF THE PUZZLE
+# OTHER PIECES OF THE PUZZLE
 
 In order to use CGI::Fast you'll need the FCGI module.  See
 http://www.cpan.org/ for details.
 
-## WRITING FASTCGI PERL SCRIPTS
+# WRITING FASTCGI PERL SCRIPTS
 
 FastCGI scripts are persistent: one or more copies of the script
 are started up when the server initializes, and stay around until
@@ -81,7 +81,7 @@ this way:
 Calls to header(), start\_form(), etc. will all operate on the
 current request.
 
-## INSTALLING FASTCGI SCRIPTS
+# INSTALLING FASTCGI SCRIPTS
 
 See the FastCGI developer's kit documentation for full details.  On
 the Apache server, the following line must be added to srm.conf:
@@ -96,13 +96,13 @@ install, you must add something like the following to srm.conf:
 This instructs Apache to launch two copies of file\_upload.fcgi at
 startup time.
 
-## USING FASTCGI SCRIPTS AS CGI SCRIPTS
+# USING FASTCGI SCRIPTS AS CGI SCRIPTS
 
 Any script that works correctly as a FastCGI script will also work
 correctly when installed as a vanilla CGI script.  However it will
 not see any performance benefit.
 
-## EXTERNAL FASTCGI SERVER INVOCATION
+# EXTERNAL FASTCGI SERVER INVOCATION
 
 FastCGI supports a TCP/IP transport mechanism which allows FastCGI scripts to run
 external to the webserver, perhaps on a remote machine.  To configure the
@@ -154,7 +154,7 @@ Or:
         process_request($q);
     }
 
-## FILE HANDLES
+# FILE HANDLES
 
 FCGI defaults to using STDIN, STDOUT, and STDERR as its filehandles - this
 may lead to unexpected redirect of output if you migrate scripts from CGI.pm
@@ -172,11 +172,11 @@ IO::Handle:
         ..
     }
 
-## CAVEATS
+# CAVEATS
 
 I haven't tested this very much.
 
-## AUTHOR INFORMATION
+# LICENSE
 
 Copyright 1996-1998, Lincoln D. Stein.  All rights reserved. Currently
 maintained by Lee Johnson
@@ -188,10 +188,10 @@ Address bug reports and comments to:
 
     https://github.com/leejo/cgi-fast
 
-## BUGS
+# BUGS
 
 This section intentionally left blank.
 
-## SEE ALSO
+# SEE ALSO
 
 [CGI::Carp](https://metacpan.org/pod/CGI::Carp), [CGI](https://metacpan.org/pod/CGI)

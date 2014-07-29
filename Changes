@@ -1,4 +1,13 @@
-Version 2.02 Jun 05, 2014
+Revision history for CGI::Fast
+
+2.03 2014-09-06
+    [DOCUMENTATION]
+    - Kwalitee improvements in distribution (LICENSE)
+
+    [TESTING]
+    - Add t/006_changes.t to check Changes file
+
+2.02 2014-06-05
 
     [INTERNALS]
     - allow FCGI_SOCKET_PATH and FCGI_LISTEN_QUEUE ENV variables to be
@@ -14,17 +23,16 @@ Version 2.02 Jun 05, 2014
     - document above changes
     - general tidy up
 
-Version 2.01 May 27, 2014
+2.01 2014-05-27
 
     [DOCUMENTATION]
     - update perldoc to list current bugtracker and maintainer
     - pod2readme the perldoc to replace content of README with something sane
 
-Version 2.00 May 22, 2014
+2.00 2014-05-22
 
     [DOCUMENTATION]
     - Repointing bugtracker at newly forked github repo
     - Tickets migrated from RT to github issues (both CGI and CGI.pm distributions)
     - Bump version to 2.00 for clear boundary of above changes
-
-For previous Changes please see CGI.pm prior to 3.65_01
+    - For previous Changes please see CGI.pm prior to 3.65_01

@@ -13,7 +13,7 @@ local $^W = 1;
 # wish, but if you redistribute a modified version, please attach a note
 # listing the modifications you have made.
 
-$CGI::Fast::VERSION='2.02';
+$CGI::Fast::VERSION='2.03';
 
 use CGI;
 use FCGI;
@@ -285,7 +285,7 @@ IO::Handle:
 
 I haven't tested this very much.
 
-=head1 AUTHOR INFORMATION
+=head1 LICENSE
 
 Copyright 1996-1998, Lincoln D. Stein.  All rights reserved. Currently
 maintained by Lee Johnson
