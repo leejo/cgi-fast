@@ -16,7 +16,7 @@ SKIP: {
     skip( 'FCGI not installed, cannot continue', 2 ) unless $fcgi;
 
     use CGI::Fast
-        '-private_tempfiles',
+        '-unique_headers',
         socket_path  => ':9000',
         listen_queue => 50
     ;
@@ -25,7 +25,7 @@ SKIP: {
     is( $CGI::Fast::queue,50,'imported listen_queue' );
 
     is(
-        $CGI::PRIVATE_TEMPFILES,
+        $CGI::HEADERS_ONCE,
         1,
         "pragma in subclass set package variable in parent class. "
     );

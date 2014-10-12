@@ -1,5 +1,11 @@
 Revision history for CGI::Fast
 
+2.04 2014-10-12
+    [TESTING]
+    - Fix tests for recent version of CGI (v4.05+), which removed the
+      -private_tempfiles pragma and PRIVATE_TEMPFILES variable, so use
+      on that is still available for testing
+    
 2.03 2014-09-06
     [DOCUMENTATION]
     - Kwalitee improvements in distribution (LICENSE)
