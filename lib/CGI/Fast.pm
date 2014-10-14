@@ -108,6 +108,11 @@ sub _create_fcgi_request {
 
 CGI::Fast - CGI Interface for Fast CGI
 
+=for html
+
+<a href='https://travis-ci.org/leejo/cgi-fast?branch=master'><img src='https://travis-ci.org/leejo/cgi-fast?branch=master' alt='Build Status' /></a>
+<a href='https://coveralls.io/r/leejo/cgi-fast?branch=master'><img src='https://coveralls.io/repos/leejo/cgi-fast?branch=master' alt='Coverage Status' /></a>
+
 =head1 SYNOPSIS
 
     use CGI::Fast
