@@ -1,5 +1,21 @@
 Revision history for CGI::Fast
 
+2.05 2014-12-11
+    [TESTING]
+    remove useless use of Test::Deep in tests
+
+    this patch was sourced from the fedora perl-devel mailing list[1],
+    in which i see more patches for CGI - fedora perl-devel people: if
+    you're going to patch modules then please send those patches upstream
+    where relevant. many perl modules are now on github (including this
+    one) so it's easy, and it prevents alternate versions of modules
+    that could lead to frustrating debugging sessions because *your*
+    version of FCGI (2.04) is different to what the *real* version of
+    FCGI (2.04) is[2].
+
+     * [1] https://lists.fedoraproject.org/pipermail/perl-devel
+     * [2] the "real" version of FCGI being that available on CPAN
+
 2.04 2014-10-12
     [TESTING]
     - Fix tests for recent version of CGI (v4.05+), which removed the
