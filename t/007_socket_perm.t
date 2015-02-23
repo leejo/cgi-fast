@@ -4,9 +4,22 @@ use strict;
 use Test::More;
 use CGI::Fast;
 
+my $OS;
+
+unless ($OS = $^O) {
+	require Config;
+	$OS = $Config::Config{'osname'};
+}
+
+if ( $OS =~ /^MSWin/i ) {
+	plan skip_all => "valid on unix-y servers only";
+}
+
 { no warnings 'redefine'; sub FCGI::Accept ($) {} }
 
-my $f = 'fcgi.sock';
+my $fh = File::Temp->new;
+my $f  = $fh->filename;
+undef( $fh );
 
 import CGI::Fast socket_path => $f;
 ok( !-e $f, 'socket not exists' );

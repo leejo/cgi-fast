@@ -13,7 +13,7 @@ local $^W = 1;
 # wish, but if you redistribute a modified version, please attach a note
 # listing the modifications you have made.
 
-$CGI::Fast::VERSION='2.05';
+$CGI::Fast::VERSION='2.06';
 
 use CGI;
 use FCGI;
@@ -62,7 +62,7 @@ sub _create_fcgi_request {
         my $backlog = $ENV{FCGI_LISTEN_QUEUE} || $queue || 100;
         my $socket  = FCGI::OpenSocket( $path, $backlog );
         if ($path !~ /^:/ && defined $perm) {
-            chmod $perm, $path or die "chmod($path): $!";
+            chmod $perm, $path or croak( "Couldn't chmod($path): $!" );
         }
         return FCGI::Request(
             ( $in_fh  || \*STDIN ),

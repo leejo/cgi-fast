@@ -1,5 +1,10 @@
 Revision history for CGI::Fast
 
+2.06 2015-02-23
+    [FEATURE]
+    - Add support for changing socket permissions. Thanks to powerman
+      for the patch and tests
+
 2.05 2014-12-11
     [TESTING]
     remove useless use of Test::Deep in tests

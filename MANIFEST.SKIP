@@ -1,0 +1,12 @@
+.git
+\.old
+\.swp
+~$
+^blib/
+^Makefile$
+^MANIFEST.*
+^MYMETA*
+^CGI-Fast
+cover_db
+.travis.yml
+pm_to_blib

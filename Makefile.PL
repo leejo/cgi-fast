@@ -10,13 +10,12 @@ WriteMakefile(
     'NAME'	=> 'CGI::Fast',
     'DISTNAME'  => 'CGI-Fast',
     'VERSION_FROM'   => 'lib/CGI/Fast.pm',
+    'MIN_PERL_VERSION' => '5.8.1',
      'PREREQ_PM' => {
        'if'          => 0, # core in 5.6.2 and later, for deprecate.pm
-       'Test::More'  => 0.98, # Ideally, this could be just a "test_requires". Version requirement is for 'subtest' support.
-       'Test::Deep'  => 0.11,
-       'File::Spec'  => .82,
        'CGI'         => 4.00,
        'FCGI'        => 0.67,
+       'Carp'        => 0,
     },
     test => { TESTS => 't/*.t' },
     'linkext'   => { LINKTYPE=>'' },	# no link needed
@@ -38,6 +37,7 @@ WriteMakefile(
                 build_requires     => {
                     'Test::More'      => 0,
                     'Test::Deep'      => 0.11,
+                    'File::Temp'      => 0,
                 },
                 configure_requires => {}
             },

@@ -12,6 +12,7 @@ CGI::Fast - CGI Interface for Fast CGI
 
     use CGI::Fast
         socket_path  => '9000',
+        socket_perm  => 0777,
         listen_queue => 50;
 
     $COUNTER = 0;
@@ -127,6 +128,10 @@ the import statements on the command line, etc.
 
     The address (TCP/IP) or path (UNIX Domain) of the socket the external FastCGI
     script to which bind an listen for incoming connections from the web server.
+
+- FCGI\_SOCKET\_PERM / socket\_perm
+
+    Permissions for UNIX Domain socket.
 
 - FCGI\_LISTEN\_QUEUE / listen\_queue
 
