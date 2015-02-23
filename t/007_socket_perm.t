@@ -3,6 +3,7 @@ use warnings;
 use strict;
 use Test::More;
 use CGI::Fast;
+use File::Temp;
 
 my $OS;
 
