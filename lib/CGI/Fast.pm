@@ -35,7 +35,7 @@ sub save_request {
 
 # If ENV{FCGI_SOCKET_PATH} is specified, we maintain a FCGI Request handle
 # in this package variable.
-use vars qw($Ext_Request $socket $queue);
+use vars qw($Ext_Request $socket $socket_perm $queue);
 
 sub import {
     my ($package,@import) = @_;
@@ -44,6 +44,8 @@ sub import {
     for (my $i = 0; $i < scalar( @import ); $i++) {
         if ( $import[$i] eq 'socket_path' ) {
             $socket = $import[$i+1];
+        } elsif ( $import[$i] eq 'socket_perm' ) {
+            $socket_perm = $import[$i+1];
         } elsif ( $import[$i] eq 'listen_queue' ) {
             $queue = $import[$i+1];
         }
@@ -56,8 +58,12 @@ sub _create_fcgi_request {
     # If we have a socket set, explicitly open it
     if ($ENV{FCGI_SOCKET_PATH} or $socket) {
         my $path    = $ENV{FCGI_SOCKET_PATH}  || $socket;
+        my $perm    = $ENV{FCGI_SOCKET_PERM}  || $socket_perm;
         my $backlog = $ENV{FCGI_LISTEN_QUEUE} || $queue || 100;
         my $socket  = FCGI::OpenSocket( $path, $backlog );
+        if ($path !~ /^:/ && defined $perm) {
+            chmod $perm, $path or die "chmod($path): $!";
+        }
         return FCGI::Request(
             ( $in_fh  || \*STDIN ),
             ( $out_fh || \*STDOUT ),
@@ -116,6 +122,7 @@ CGI::Fast - CGI Interface for Fast CGI
 
     use CGI::Fast
         socket_path  => '9000',
+        socket_perm  => 0777,
         listen_queue => 50;
 
     $COUNTER = 0;
@@ -233,6 +240,10 @@ the import statements on the command line, etc.
 
 The address (TCP/IP) or path (UNIX Domain) of the socket the external FastCGI
 script to which bind an listen for incoming connections from the web server.
+
+=item FCGI_SOCKET_PERM / socket_perm
+
+Permissions for UNIX Domain socket.
 
 =item FCGI_LISTEN_QUEUE / listen_queue
 
