@@ -1,6 +1,6 @@
 Revision history for CGI::Fast
 
-2.08 2015-03-08
+2.09 2015-03-08
     [DOCUMENTATION]
     - Clarify order of use statements when using both CGI and CGI::Fast
     - Replace indirect object notation with ->new
