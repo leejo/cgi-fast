@@ -1,5 +1,13 @@
 Revision history for CGI::Fast
 
+2.08 2015-03-08
+    [DOCUMENTATION]
+    - Clarify order of use statements when using both CGI and CGI::Fast
+    - Replace indirect object notation with ->new
+
+    [TESTING]
+    - Tests for CGI imports and load order
+
 2.07 2015-02-23
     [FIX]
     - test added in 2.06 should use File::Temp
