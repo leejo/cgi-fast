@@ -7,12 +7,6 @@ use if $] >= 5.019, 'deprecate';
 # and since we're not in a BLOCK, warnings are enabled until the EOF
 local $^W = 1;
 
-# Copyright 1995,1996, Lincoln D. Stein.  All rights reserved.
-# It may be used and modified freely, but I do request that this copyright
-# notice remain attached to the file.  You may modify this module as you
-# wish, but if you redistribute a modified version, please attach a note
-# listing the modifications you have made.
-
 $CGI::Fast::VERSION='2.09';
 
 use CGI;
