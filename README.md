@@ -15,6 +15,8 @@ CGI::Fast - CGI Interface for Fast CGI
         socket_perm  => 0777,
         listen_queue => 50;
 
+    use CGI qw/ :standard /;
+
     $COUNTER = 0;
 
     # optional, will default to STDOUT, STDIN, STDERR
@@ -24,15 +26,8 @@ CGI::Fast - CGI Interface for Fast CGI
         fcgi_error_file_handle  => IO::Handle->new,
     });
 
-    while (new CGI::Fast) {
-        print header;
-        print start_html("Fast CGI Rocks");
-        print
-        h1("Fast CGI Rocks"),
-        "Invocation number ",b($COUNTER++),
-            " PID ",b($$),".",
-        hr;
-        print end_html;
+    while ($q = CGI::Fast->new) {
+        process_request($q);
     }
 
 # DESCRIPTION
@@ -63,7 +58,7 @@ A typical FastCGI script will look like this:
     #!perl
     use CGI::Fast;
     do_some_initialization();
-    while ($q = new CGI::Fast) {
+    while ($q = CGI::Fast->new) {
         process_request($q);
     }
 
@@ -79,7 +74,7 @@ scripts).
 CGI.pm's default CGI object mode also works.  Just modify the loop
 this way:
 
-    while (new CGI::Fast) {
+    while (CGI::Fast->new) {
         process_request();
     }
 
@@ -144,24 +139,33 @@ For example:
         listen_queue => "50"
     ;
 
+    use CGI qw/ :standard /;
+
     do_some_initialization();
 
-    while ($q = new CGI::Fast) {
+    while ($q = CGI::Fast->new) {
         process_request($q);
     }
 
 Or:
 
     use CGI::Fast;
+    use CGI qw/ :standard /;
 
     do_some_initialization();
 
     $ENV{FCGI_SOCKET_PATH} = "sputnik:8888";
     $ENV{FCGI_LISTEN_QUEUE} = 50;
 
-    while ($q = new CGI::Fast) {
+    while ($q = CGI::Fast->new) {
         process_request($q);
     }
+
+Note the importance of having use CGI after use CGI::Fast as this will
+prevent any CGI import pragmas being overwritten by CGI::Fast. You can
+use CGI::Fast as a drop in replacement like so:
+
+    use CGI::Fast qw/ :standard /
 
 # FILE HANDLES
 
@@ -177,7 +181,7 @@ IO::Handle:
         fcgi_error_file_handle  => IO::Handle->new,
     });
 
-    while (new CGI::Fast) {
+    while (CGI::Fast->new) {
         ..
     }
 
