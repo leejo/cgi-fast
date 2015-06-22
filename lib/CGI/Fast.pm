@@ -1,13 +1,9 @@
 package CGI::Fast;
 use strict;
+use warnings;
 use if $] >= 5.019, 'deprecate';
 
-# A way to say "use warnings" that's compatible with even older perls.
-# making it local will not affect the code that loads this module
-# and since we're not in a BLOCK, warnings are enabled until the EOF
-local $^W = 1;
-
-$CGI::Fast::VERSION='2.09';
+$CGI::Fast::VERSION='2.10';
 
 use CGI;
 use FCGI;

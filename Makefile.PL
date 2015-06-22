@@ -8,6 +8,7 @@ WriteMakefile(
     NAME             => 'CGI::Fast',
     DISTNAME         => 'CGI-Fast',
     VERSION_FROM     => 'lib/CGI/Fast.pm',
+    LICENSE          => 'perl',
     MIN_PERL_VERSION => '5.8.1',
     PREREQ_PM        => {
         'if'          => 0, # core in 5.6.2 and later, for deprecate.pm
