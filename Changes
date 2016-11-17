@@ -1,5 +1,9 @@
 Revision history for CGI::Fast
 
+2.11 2016-11-17
+    [FIX]
+    - make sure we use CGI::Carp as we depend on it (GH #15, thanks to melak)
+
 2.10 2015-06-22
     [DOCUMENTATION]
     - Kwalitee improvements in distribution
