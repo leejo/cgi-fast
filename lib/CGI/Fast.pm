@@ -6,6 +6,7 @@ use if $] >= 5.019, 'deprecate';
 $CGI::Fast::VERSION='2.10';
 
 use CGI;
+use CGI::Carp;
 use FCGI;
 # use vars works like "our", but is compatible with older Perls.
 use vars qw(
