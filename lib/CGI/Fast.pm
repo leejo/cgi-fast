@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use if $] >= 5.019, 'deprecate';
 
-$CGI::Fast::VERSION='2.11';
+$CGI::Fast::VERSION='2.12';
 
 use CGI;
 use CGI::Carp;
