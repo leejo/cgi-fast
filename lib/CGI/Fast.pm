@@ -120,9 +120,8 @@ CGI::Fast - CGI Interface for Fast CGI
 
     $COUNTER = 0;
 
-    # optional, will default to STDOUT, STDIN, STDERR
+    # optional, will default to STDOUT, STDERR
     CGI::Fast->file_handles({
-        fcgi_input_file_handle  => IO::Handle->new,
         fcgi_output_file_handle => IO::Handle->new,
         fcgi_error_file_handle  => IO::Handle->new,
     });
@@ -275,14 +274,13 @@ use CGI::Fast as a drop in replacement like so:
 
 =head1 FILE HANDLES
 
-FCGI defaults to using STDIN, STDOUT, and STDERR as its filehandles - this
+FCGI defaults to using STDOUT and STDERR as its output filehandles - this
 may lead to unexpected redirect of output if you migrate scripts from CGI.pm
 to CGI::Fast. To get around this you can use the file_handles method, which
 you must do B<before> the first call to CGI::Fast->new. For example using
 IO::Handle:
 
     CGI::Fast->file_handles({
-        fcgi_input_file_handle  => IO::Handle->new,
         fcgi_output_file_handle => IO::Handle->new,
         fcgi_error_file_handle  => IO::Handle->new,
     });
@@ -290,6 +288,9 @@ IO::Handle:
     while (CGI::Fast->new) {
         ..
     }
+
+Overriding STDIN using the C<fcgi_input_file_handle> key is also possible,
+however doing so is likely to break at least POST requests.
 
 =head1 CAVEATS
 
