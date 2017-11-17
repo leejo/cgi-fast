@@ -24,10 +24,6 @@ install:
 
 script:
     - prove -lrs t
-    - cover
-
-after_success:
-    - cover -report coveralls
 
 sudo: false
 
