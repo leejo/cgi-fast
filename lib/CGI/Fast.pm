@@ -91,7 +91,8 @@ sub _create_fcgi_request {
 
         if ( ! defined $initializer ) {
             $Ext_Request ||= _create_fcgi_request( $in_fh,$out_fh,$err_fh );
-            return undef unless $Ext_Request->Accept >= 0;
+			my $accept = $Ext_Request->Accept;
+            return undef unless ( defined $accept && $accept >= 0 );
         }
         CGI->_reset_globals;
         $self->_setup_symbols(@CGI::SAVED_SYMBOLS) if @CGI::SAVED_SYMBOLS;
