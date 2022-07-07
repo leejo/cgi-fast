@@ -328,13 +328,11 @@ maintained by Lee Johnson
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 
+=head1 BUGS
+
 Address bug reports and comments to:
 
     https://github.com/leejo/cgi-fast
-
-=head1 BUGS
-
-This section intentionally left blank.
 
 =head1 SEE ALSO
 
