@@ -8,15 +8,11 @@ $CGI::Fast::VERSION='2.16';
 use CGI;
 use CGI::Carp;
 use FCGI;
-# use vars works like "our", but is compatible with older Perls.
-use vars qw(
-    @ISA
-    $ignore
-);
-@ISA = ('CGI');
+
+our @ISA = ('CGI');
 
 # workaround for known bug in libfcgi
-while (($ignore) = each %ENV) { }
+while (() = each %ENV) { }
 
 # override the initialization behavior so that
 # state is NOT maintained between invocations
@@ -26,7 +22,7 @@ sub save_request {
 
 # If ENV{FCGI_SOCKET_PATH} is specified, we maintain a FCGI Request handle
 # in this package variable.
-use vars qw($Ext_Request $socket $socket_perm $queue);
+our ($Ext_Request, $socket, $socket_perm, $queue);
 
 sub import {
     my ($package,@import) = @_;
